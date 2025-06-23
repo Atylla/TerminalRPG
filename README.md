@@ -21,5 +21,8 @@ A proposta é criar uma experiência imersiva e minimalista, onde a interface é
 ## Objetivo
 Esse projeto foi criado como parte do meu portfólio, com o objetivo de demonstrar domínio em manipulação de DOM, lógica em JavaScript e criação de interfaces alternativas.
 
+## Extras
+Esse projeto ainda está em desenvolvimento.
+
 ## Licença
 Este projeto está licenciado conforme os termos do arquivo `LICENSE`.
