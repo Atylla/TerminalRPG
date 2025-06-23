@@ -1,14 +1,25 @@
 # TerminalRPG
 
-Um jogo que simula terminal feito em HTML, CSS e JavaScript, onde você digita comandos para interagir e realizar ações.
+TerminalRPG é um projeto desenvolvido com HTML, CSS e JavaScript que simula um terminal de linha de comando dentro do navegador.  
+O jogador interage com o sistema digitando comandos específicos que desencadeiam ações, eventos e respostas programadas.  
+A proposta é criar uma experiência imersiva e minimalista, onde a interface é o próprio terminal.
 
 ## Funcionalidades
-- Simula um terminal
-- Eventos baseados em comandos digitados
+- Simulação de um terminal visual e funcional no navegador
+- Interação por meio de comandos digitados
+- Respostas programadas e eventos dinâmicos baseados na lógica interna
 
-## Como rodar
-1. Baixe os arquivos
-2. Abra o `index.html` no navegador
+## Como executar o projeto
+1. Faça o download ou clone este repositório
+2. Abra o arquivo `index.html` em qualquer navegador moderno
+3. Comece a digitar comandos e explore o sistema
+4. Ou entre no site: https://atylla.github.io/TerminalRPG/
+
+## DICA
+- Comece digitando o comando 'help'.
+
+## Objetivo
+Esse projeto foi criado como parte do meu portfólio, com o objetivo de demonstrar domínio em manipulação de DOM, lógica em JavaScript e criação de interfaces alternativas.
 
 ## Licença
-Ver arquivo LICENSE
+Este projeto está licenciado conforme os termos do arquivo `LICENSE`.
