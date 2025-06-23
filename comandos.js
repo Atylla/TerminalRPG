@@ -40,16 +40,132 @@ export const buscarCenario = (id, cenario = mapa, visitados = new Set()) => {
 
 export const comandos = {
 
-    help() {
-        uLista.innerHTML = '';
-        return [
-            'COMANDOS DISPONÍVEIS:',
-            'help',
-            'clear',
-            'list',
-            'create',
-            'delete'
-        ];
+    help(comand) {
+        uListaR.innerHTML = '';
+        switch (comand) {
+            case 'help':
+                return [
+                    'COMANDOS DISPONÍVEIS:',
+                    'help',
+                    'clear',
+                    'exit',
+                    'newGame',
+                    'save',
+                    'select',
+                    'load',
+                    'create',
+                    'list',
+                    'delete',
+                    'status',
+                    'inventory',
+                    'look',
+                    'cd',
+                    'pickup',
+                    'story',
+                    'interact',
+                    'attack'
+                ];
+                
+            case 'clear':
+                return [
+                    'COMANDO CLEAR',
+                    'clear',
+                    'clear console',
+                    'clear all'
+                ];
+            case 'exit':
+                return [
+                    'COMANDO EXIT',
+                    'exit'
+                ];
+            case 'newGame':
+                return [
+                    'COMANDO NEWGAME',
+                    'newGame',
+                ]
+            case 'save':
+                return [
+                    'COMANDO SAVE',
+                    'save',
+                ]
+            case 'select':
+                return [
+                    'COMANDO SELECT',
+                    'select [personagem]',
+                ]
+            case 'load':
+                return [
+                    'COMANDO LOAD',
+                    'load [personagem]',
+                ]
+            case 'create':
+                return [
+                    'COMANDO CREATE',
+                    'create [nome] [classe]',
+                ]
+            case 'list':
+                return [
+                    'COMANDO LIST',
+                    'list',
+                ]
+            case 'delete':
+                return [
+                    'COMANDO DELETE',
+                    'delete [personagem]',
+                ]
+            case 'status':
+                return [
+                    'COMANDO STATUS',
+                    'status',
+                ]
+            case 'inventory':
+                return [
+                    'COMANDO INVENTORY',
+                    'inventory',
+                    'inventory use [item]',
+                    'inventory drop [item]'
+                ]
+            case 'look':
+                return [
+                    'COMANDO LOOK',
+                    'look'
+                ]
+            case 'cd':
+                return [
+                    'COMANDO CD',
+                    'cd [cena]'
+                ]
+            case 'pickup':
+                return [
+                    'COMANDO PICKUP',
+                    'pickup [item]',
+                ]
+            case 'store':
+                return [
+                    'COMANDO STORE',
+                    'store buy [item]',
+                    'store sell [item]',
+                    'store saldo [item]'
+                ]
+            case 'interact':
+                return [
+                    'COMANDO INTERACT',
+                    'interact [npc]',
+                    'interact [resposta]'
+                ]
+            case 'attack':
+                return [
+                    'COMANDO ATTACK',
+                    'attack [npc]',
+                ]
+            default:
+                return [
+                    'COMANDO HELP',
+                    'help [comando]'
+                ];
+        }
+
+
     },
     ultimo() {
         const p = estado.personagemAtivo;
@@ -57,7 +173,7 @@ export const comandos = {
 
         if (!estado.emCombate) return ['Você não está em combate ou morto.'];
 
-        p.life = Math.max(1, p.life); 
+        p.life = Math.max(1, p.life);
         estado.emCombate = false;
 
         return [`${p.name} foi salvo no último segundo! Volte à luta!`];
@@ -128,7 +244,7 @@ export const comandos = {
         const save = localStorage.getItem(`save_${personagem.id}`);
         if (save) {
             const data = JSON.parse(save);
-            Object.assign(personagem, data); 
+            Object.assign(personagem, data);
         }
 
         this.load();
@@ -142,8 +258,7 @@ export const comandos = {
             ...mensagensCd
         ];
     },
-
-
+    // arrumar aqui
     load() {
         const p = estado.personagemAtivo;
         if (!p) return ['Nenhum personagem selecionado.'];
@@ -153,7 +268,7 @@ export const comandos = {
 
         const data = JSON.parse(raw);
 
-   
+
         let novoPersonagem;
         if (data.classe === 'guerreiro') {
             novoPersonagem = new Guerreiro(data.name);
@@ -164,7 +279,7 @@ export const comandos = {
 
         Object.assign(novoPersonagem, data);
 
- 
+
         novoPersonagem.inventario = data.inventario.map(i => {
             const itemBase = Itens[i.id] || Itens[i.nome.toLowerCase().replaceAll(' ', '_')];
             return {
@@ -187,13 +302,10 @@ export const comandos = {
 
         return [`Save de ${novoPersonagem.name} carregado com sucesso.`];
     },
-
-
-
     create(...par1) {
         uListaR.innerHTML = '';
 
-     
+
         if (par1.length < 2) {
             return ['Uso: create [nome] [classe]'];
         }
@@ -222,8 +334,6 @@ export const comandos = {
 
         return [`${p.name} criado com id ${p.id}`];
     },
-
-
     list() {
         uListaR.innerHTML = '';
         if (estado.personagens.length > 0) {
@@ -244,21 +354,19 @@ export const comandos = {
         localStorage.setItem('personagens', JSON.stringify(estado.personagens));
         return [`${removido.name} deletado com sucesso.`];
     },
-
-   
     status() {
         const p = estado.personagemAtivo;
 
         if (!p) return ['Nenhum personagem selecionado.'];
 
-       
+
         const questsFormatadas = Object.keys(p.quests).length > 0
             ? Object.entries(p.quests)
                 .map(([nome, estado]) => ` - ${nome}: ${estado}`)
                 .join('\n')
             : ' - Nenhuma';
 
-     
+
         const statusAtivos = Object.entries(p.status)
             .filter(([_, ativo]) => ativo)
             .map(([nome]) => nome)
@@ -279,7 +387,6 @@ export const comandos = {
         ];
 
     },
-
     inventory(comand, ...item) {
         const p = estado.personagemAtivo;
         if (!p) return ['Nenhum personagem selecionado.'];
@@ -290,7 +397,7 @@ export const comandos = {
             case 'add':
                 if (!nomeItem || !Itens[nomeItem]) return ['Uso: inventary add [item] (válido)'];
                 const itemOrig = Itens[nomeItem];
-              
+
                 const itemObj = new Item(itemOrig.nome, itemOrig.tipo, itemOrig.valor, itemOrig.usar);
                 p.inventario.push(itemObj);
                 return [`${itemObj.nome} adicionado ao inventário.`];
@@ -316,11 +423,11 @@ export const comandos = {
                     item = p.inventario[indexUse];
                 }
 
-          
+
                 function equipar(item) {
                     if (item.tipo === 'arma') {
                         if (p.equipamento.arma) {
-                      
+
                             p.inventario.push(p.equipamento.arma);
                         }
                         p.equipamento.arma = item;
@@ -357,16 +464,16 @@ export const comandos = {
                 }
 
                 if (estaEquipado) {
-              
+
                     const msg = desequipar(item);
                     return [msg];
                 } else {
-             
+
                     if (item.tipo === 'arma' || item.tipo === 'defesa') {
                         const msg = equipar(item);
                         return [msg];
                     } else if (typeof item.usar === 'function') {
-               
+
                         p.inventario.splice(indexUse, 1);
                         const resultado = item.usar(p);
                         return [resultado];
@@ -402,7 +509,6 @@ export const comandos = {
                 ];
         }
     },
-
     look() {
         uListaR.innerHTML = '';
         const atual = estado.cenarioAtual;
@@ -447,7 +553,7 @@ export const comandos = {
             const rolar = Math.random() * 100;
 
             if (rolar > chanceFuga) {
-                estado.fugaBloqueada = true; 
+                estado.fugaBloqueada = true;
                 this.save();
                 return [
                     `Você tentou fugir, mas falhou! (Chance de fuga: ${chanceFuga.toFixed(0)}%)`,
@@ -460,17 +566,17 @@ export const comandos = {
                 console.log('fuga bem sucedida');
             }
         } else {
-           
+
             estado.emCombate = false;
             estado.fugaBloqueada = false;
             console.log('sem hostis');
         }
-       
+
         const nomeDigitado = local.join(' ').toLowerCase().trim();
 
         const nomeAtual = atual.nome.toLowerCase().trim();
         if (nomeDigitado === nomeAtual) {
-            atual.gerarObjetos({ limitesPrecos, gerarValorEntre }); 
+            atual.gerarObjetos({ limitesPrecos, gerarValorEntre });
             povoarCenarioComNpcs({
                 npcsPossiveis: NPCsPorRegiao[atual.id] || [],
                 cenario: atual,
@@ -523,11 +629,6 @@ export const comandos = {
         novoCenario.gerarObjetos({ limitesPrecos, gerarValorEntre });
         return novoCenario.renderizar();
     },
-
-
-
-
-
     pickup(...nomeItem) {
         const nomeLower = nomeItem.join(' ').toLowerCase().trim();
 
@@ -560,12 +661,11 @@ export const comandos = {
 
         p.inventario.push(itemReal);
 
- 
+
         this.save();
 
         return [`Você pegou ${itemReal.nome}.`];
     },
-
     store(acao, ...nomeItem) {
         const p = estado.personagemAtivo;
         if (!p) return ['Nenhum personagem selecionado.'];
@@ -624,11 +724,6 @@ export const comandos = {
                 return ['Comando inválido. Use: store [buy|sell|saldo] [nome do item]'];
         }
     },
-
-
-
-
-
     interact(...args) {
         if (args.length === 0) return ['Uso: interact [npc | resp1 | resp2 | exit]'];
 
@@ -663,9 +758,6 @@ export const comandos = {
         estado.interacaoAtual = { npc };
         return npc.interagir();
     },
-
-
-
     talk() {
 
     },
@@ -762,12 +854,9 @@ export const comandos = {
         this.save?.();
         return mensagens;
     },
-
-
     defend() {
 
     },
-
     hack() {
 
     },
